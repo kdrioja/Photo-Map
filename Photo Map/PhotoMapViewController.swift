@@ -8,6 +8,7 @@
 
 import UIKit
 import MapKit
+//import PhotoAnnotation
 
 class PhotoMapViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, LocationsViewControllerDelegate {
     
@@ -52,7 +53,10 @@ class PhotoMapViewController: UIViewController, UIImagePickerControllerDelegate,
     }
     
     func locationsPickedLocation(controller: LocationsViewController, latitude: NSNumber, longitude: NSNumber) {
-        <#code#>
+        self.navigationController?.popToViewController(self, animated: true)
+        let locationCoordinate = CLLocationCoordinate2D(latitude: CLLocationDegrees(latitude), longitude: CLLocationDegrees(longitude))
+        //let annotation = PhotoAnnotation(coordinate: locationCoordinate, name: name, image: self.photo!)
+        //mapView.addAnnotation(annotation)
     }
     
     override func didReceiveMemoryWarning() {
@@ -74,7 +78,7 @@ class PhotoMapViewController: UIViewController, UIImagePickerControllerDelegate,
         }
         else if segue.identifier == "fullImageSegue" {
             let destinationViewController = segue.destination as! FullImageViewController
-            //destinationViewController.bigImage = 
+            //destinationViewController.bigImage =
         }
     }
     
