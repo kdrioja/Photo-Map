@@ -9,7 +9,7 @@ Time spent: **X** hours spent in total
 The following **required** user stories are complete:
 
 - [X] User can view a map (+2pt)
-- [ ] User can take a photo (+1pt)
+- [X] User can take a photo (+1pt)
 - [ ] User can tag a location (+1pt)
 - [ ] User can drop a pin with image annotation (+1pt)
 
