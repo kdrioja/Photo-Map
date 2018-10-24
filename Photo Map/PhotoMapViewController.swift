@@ -9,7 +9,7 @@
 import UIKit
 import MapKit
 
-class PhotoMapViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class PhotoMapViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, LocationsViewControllerDelegate {
     
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var cameraButton: UIButton!
@@ -50,6 +50,11 @@ class PhotoMapViewController: UIViewController, UIImagePickerControllerDelegate,
         }
         
     }
+    
+    func locationsPickedLocation(controller: LocationsViewController, latitude: NSNumber, longitude: NSNumber) {
+        <#code#>
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -61,6 +66,16 @@ class PhotoMapViewController: UIViewController, UIImagePickerControllerDelegate,
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+        
+        if segue.identifier == "tageSegue" {
+            // Pass the selected object to the new view controller
+            let destinationViewController = segue.destination as! LocationsViewController
+            destinationViewController.delegate = self
+        }
+        else if segue.identifier == "fullImageSegue" {
+            let destinationViewController = segue.destination as! FullImageViewController
+            //destinationViewController.bigImage = 
+        }
     }
     
 
