@@ -45,7 +45,9 @@ class PhotoMapViewController: UIViewController, UIImagePickerControllerDelegate,
         let photoPicked = info[UIImagePickerControllerOriginalImage] as!  UIImage
         self.photo = photoPicked
         
-        dismiss(animated: true, completion: nil)
+        dismiss(animated: true) {
+            self.performSegue(withIdentifier: "tagSegue", sender: nil)
+        }
         
     }
     override func didReceiveMemoryWarning() {
