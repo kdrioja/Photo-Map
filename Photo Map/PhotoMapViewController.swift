@@ -9,10 +9,11 @@
 import UIKit
 import MapKit
 
-class PhotoMapViewController: UIViewController {
+class PhotoMapViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var cameraButton: UIButton!
+    var photo: UIImage!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,13 +24,35 @@ class PhotoMapViewController: UIViewController {
         mapView.setRegion(sfRegion, animated: false)
     }
 
+    
+    @IBAction func onTapCamera(_ sender: Any) {
+        let vc = UIImagePickerController()
+        vc.delegate = self
+        vc.allowsEditing = false
+        
+        if UIImagePickerController.isSourceTypeAvailable(.camera) {
+            print("Camera is available!")
+            vc.sourceType = UIImagePickerController.SourceType.camera
+        }
+        else {
+            vc.sourceType = UIImagePickerController.SourceType.photoLibrary
+        }
+        
+        self.present(vc, animated: true, completion: nil)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        let photoPicked = info[UIImagePickerControllerOriginalImage] as!  UIImage
+        self.photo = photoPicked
+        
+        dismiss(animated: true, completion: nil)
+        
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
 
-    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
