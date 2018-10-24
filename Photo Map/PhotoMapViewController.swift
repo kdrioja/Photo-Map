@@ -11,7 +11,8 @@ import MapKit
 
 class PhotoMapViewController: UIViewController {
     
-    var mapView: MKMapView!
+    @IBOutlet weak var mapView: MKMapView!
+    @IBOutlet weak var cameraButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
