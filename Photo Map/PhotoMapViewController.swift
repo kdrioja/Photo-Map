@@ -19,7 +19,7 @@ class PhotoMapViewController: UIViewController, UIImagePickerControllerDelegate,
     override func viewDidLoad() {
         super.viewDidLoad()
         cameraButton.layer.masksToBounds = true
-        cameraButton.layer.cornerRadius = cameraButton.frame.width/2
+        cameraButton.layer.cornerRadius = 3 //cameraButton.frame.width/2
         //one degree of latitude is approximately 111 kilometers (69 miles) at all times.
         let sfRegion = MKCoordinateRegionMake(CLLocationCoordinate2DMake(37.783333, -122.416667),
                                               MKCoordinateSpanMake(0.1, 0.1))
