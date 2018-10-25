@@ -10,7 +10,7 @@ import UIKit
 import MapKit
 //import PhotoAnnotation
 
-class PhotoMapViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, LocationsViewControllerDelegate {
+class PhotoMapViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, LocationsViewControllerDelegate, MKMapViewDelegate {
     
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var cameraButton: UIButton!
@@ -18,14 +18,15 @@ class PhotoMapViewController: UIViewController, UIImagePickerControllerDelegate,
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        cameraButton.layer.masksToBounds = true
+        cameraButton.layer.cornerRadius = cameraButton.frame.width/2
         //one degree of latitude is approximately 111 kilometers (69 miles) at all times.
         let sfRegion = MKCoordinateRegionMake(CLLocationCoordinate2DMake(37.783333, -122.416667),
                                               MKCoordinateSpanMake(0.1, 0.1))
         mapView.setRegion(sfRegion, animated: false)
+        mapView.delegate = self
     }
 
-    
     @IBAction func onTapCamera(_ sender: Any) {
         let vc = UIImagePickerController()
         vc.delegate = self
@@ -43,8 +44,8 @@ class PhotoMapViewController: UIViewController, UIImagePickerControllerDelegate,
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        let photoPicked = info[UIImagePickerControllerOriginalImage] as!  UIImage
-        self.pinImage = photoPicked
+        let originalImage = info[UIImagePickerControllerOriginalImage] as!  UIImage
+        self.pinImage = originalImage
         
         dismiss(animated: true) {
             self.performSegue(withIdentifier: "tagSegue", sender: nil)
@@ -53,11 +54,13 @@ class PhotoMapViewController: UIViewController, UIImagePickerControllerDelegate,
     }
     
     func locationsPickedLocation(controller: LocationsViewController, latitude: NSNumber, longitude: NSNumber) {
-        self.navigationController?.popToViewController(self, animated: true)
+        let annotation = MKPointAnnotation()
         let locationCoordinate = CLLocationCoordinate2D(latitude: CLLocationDegrees(latitude), longitude: CLLocationDegrees(longitude))
-        //let annotation = PhotoAnnotation(coordinate: locationCoordinate, name: name, image: self.photo!)
-        //mapView.addAnnotation(annotation)
-        let annotation =
+        annotation.coordinate = locationCoordinate
+        print("HEY \(locationCoordinate)")
+        annotation.title = String(describing: latitude)
+        mapView.addAnnotation(annotation)
+        self.navigationController?.popToViewController(self, animated: true)
     }
     
     override func didReceiveMemoryWarning() {
@@ -72,7 +75,7 @@ class PhotoMapViewController: UIViewController, UIImagePickerControllerDelegate,
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
         
-        if segue.identifier == "tageSegue" {
+        if segue.identifier == "tagSegue" {
             // Pass the selected object to the new view controller
             let destinationViewController = segue.destination as! LocationsViewController
             destinationViewController.delegate = self
@@ -83,5 +86,19 @@ class PhotoMapViewController: UIViewController, UIImagePickerControllerDelegate,
         }
     }
     
-
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        let reuseID = "myAnnotationView"
+        
+        var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseID)
+        if (annotationView == nil) {
+            annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseID)
+            annotationView!.canShowCallout = true
+            annotationView!.leftCalloutAccessoryView = UIImageView(frame: CGRect(x:0, y:0, width: 50, height:50))
+        }
+        
+        let imageView = annotationView?.leftCalloutAccessoryView as! UIImageView
+        imageView.image = pinImage
+        
+        return annotationView
+    }
 }
