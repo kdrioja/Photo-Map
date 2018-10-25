@@ -6,12 +6,12 @@
 //  Copyright (c) 2014 Timothy Lee. All rights reserved.
 //
 
-import UIKit
-
 // Protocol definition - top of LocationsViewController.swift
 protocol LocationsViewControllerDelegate : class {
     func locationsPickedLocation(controller: LocationsViewController, latitude: NSNumber, longitude: NSNumber)
 }
+
+import UIKit
 
 class LocationsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
 

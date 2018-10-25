@@ -14,7 +14,7 @@ class PhotoMapViewController: UIViewController, UIImagePickerControllerDelegate,
     
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var cameraButton: UIButton!
-    var photo: UIImage!
+    var pinImage: UIImage!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,7 +44,7 @@ class PhotoMapViewController: UIViewController, UIImagePickerControllerDelegate,
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         let photoPicked = info[UIImagePickerControllerOriginalImage] as!  UIImage
-        self.photo = photoPicked
+        self.pinImage = photoPicked
         
         dismiss(animated: true) {
             self.performSegue(withIdentifier: "tagSegue", sender: nil)
@@ -57,6 +57,7 @@ class PhotoMapViewController: UIViewController, UIImagePickerControllerDelegate,
         let locationCoordinate = CLLocationCoordinate2D(latitude: CLLocationDegrees(latitude), longitude: CLLocationDegrees(longitude))
         //let annotation = PhotoAnnotation(coordinate: locationCoordinate, name: name, image: self.photo!)
         //mapView.addAnnotation(annotation)
+        let annotation =
     }
     
     override func didReceiveMemoryWarning() {
